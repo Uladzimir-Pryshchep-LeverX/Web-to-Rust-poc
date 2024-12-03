@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>gRPC-Web TypeScript Client</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>GRPC-Web + WebSocket Client</h1>
+      <button onclick="startBiStream()">Start Duplex Streaming</button>
+      <button onclick="startServerStream()">Start Server Streaming</button>
+      <br />
+      <br />
+      <div>
+        <button onclick="startWebSocket()">Start WebSocket</button>
+        <button onclick="sendWebSocketMessage()">Send More WebSocket messages</button>
+      </div>
+      <br />
+      <button onclick="clearResponse()">Clear Response logs</button>
+      <br />
+      <br />
+      <hr>
+      <div id="response"></div>
+    </div>
+    <script type="module" src="/src/client-duplex.ts"></script>
+    <script type="module" src="/src/client-server.ts"></script>
+    <script type="module" src="/src/client-socket.ts"></script>
+  </body>
+</html>

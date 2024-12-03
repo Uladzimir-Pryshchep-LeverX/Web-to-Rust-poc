@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package stream;
+
+service Streamer {
+    rpc BiStream(stream Message) returns (stream Message);
+}
+
+message Message {
+    string content = 1;
+}
