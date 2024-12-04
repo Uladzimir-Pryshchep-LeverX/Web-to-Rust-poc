@@ -4,9 +4,13 @@
 - in 'web-grpc' folder:
   - `npm install`
 
-### WASM RUST WebSocket
-- `wasm-pack build --target web` to build the wasm module 
-- `npm run dev` from 'web-grpc' folder to run the web client
+### WASM RUST WebSocket (Node.js required)
+- in 'rust-grpc' folder:
+  - `wasm-pack build --target web` to build the wasm module 
+- in 'web-grpc' folder:
+  - `npm install` to install the dependencies
+  - `node socket.js` to run the WebSocket independent server as a transport between JS and WASM
+  - `npm run dev` to run the web client
 
 
 ### Server proto GRPC (doesn't work in 'wasm' branch)
@@ -28,3 +32,5 @@
     --ts_out=src/proto-server \
     --proto_path=../proto \
     ../proto/stream-server.proto`
+
+- `cargo install wasm-pack`
