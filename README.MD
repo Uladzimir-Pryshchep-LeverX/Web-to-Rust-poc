@@ -4,12 +4,17 @@
 - in 'web-grpc' folder:
   - `npm install`
 
-### Server proto GRPC
+### WASM RUST WebSocket
+- `wasm-pack build --target web` to build the wasm module 
+- `npm run dev` from 'web-grpc' folder to run the web client
+
+
+### Server proto GRPC (doesn't work in 'wasm' branch)
 - `cargo run --bin server-stream` from 'rust-grpc' folder to run Rust server
 - `envoy -c envoy.yaml` from 'web-grpc' folder to run the proxy
 - `npm run dev` from 'web-grpc' folder to run the web client
 
-### WebSocket
+### WebSocket (wrapped in WASM in 'wasm' branch)
 - `cargo run --bin websocket-server` from 'rust-grpc' folder to run the Rust WebSocket server
 - `npm run dev` from 'web-grpc' folder to run the web client
 

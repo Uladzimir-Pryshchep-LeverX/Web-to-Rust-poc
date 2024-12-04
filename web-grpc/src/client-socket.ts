@@ -1,77 +1,44 @@
-let ws: WebSocket | null = null;
-let messageCounter = 0;
+import init, { WasmSocket } from '../../rust-grpc/pkg/rust_grpc.js';
 
-function startWebSocket() {
-    const responseDiv = document.getElementById('response');
-    if (responseDiv) {
-        responseDiv.innerText = 'Starting WebSocket connection...\n';
+let wasmWs: WasmSocket | null = null;
+
+async function startWasmWebSocket() {
+    try {
+        await init();
+        const ws = new WasmSocket('ws://localhost:8081');
+        
+        ws.set_onmessage((data: any) => {
+            console.log('Received via WASM:', data);
+            const responseDiv = document.getElementById('response');
+            if (responseDiv) {
+                responseDiv.innerText += `Received via WASM: ${data}\n`;
+            }
+        });
+
+        wasmWs = ws;
+        console.log('WASM WebSocket initialized');
+    } catch (error) {
+        console.error('Failed to initialize WebSocket:', error);
     }
-
-    ws = new WebSocket('ws://localhost:8081');
-
-    ws.onopen = () => {
-        console.log('WebSocket server connected...');
-        if (responseDiv) {
-            responseDiv.innerText += 'WebSocket server connected...\n';
-        }
-        const message = {
-            message_type: "chat", 
-            content: "Message from Web client"
-        };
-        ws.send(JSON.stringify(message));
-    };
-
-    ws.onmessage = (event) => {
-        console.log('Received:', event.data);
-        if (responseDiv) {
-            responseDiv.innerText += `Received: ${event.data}\n`;
-        }
-    };
-
-    ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
-        if (responseDiv) {
-            responseDiv.innerText += `WebSocket error: ${error}\n`;
-        }
-    };
-
-    ws.onclose = () => {
-        console.log('Disconnected from WebSocket server');
-        if (responseDiv) {
-            responseDiv.innerText += 'Disconnected from WebSocket server\n';
-        }
-        ws = null;
-    };
 }
 
 function sendWebSocketMessage() {
-    const responseDiv = document.getElementById('response');
-    if (!ws) {
-        console.error('WebSocket is not connected');
-        if (responseDiv) {
-            responseDiv.innerText += 'WebSocket is not connected\n';
-        }
+    if (!wasmWs) {
+        console.error('WebSocket is not initialized');
         return;
     }
 
-    messageCounter++;
     const message = {
         message_type: "chat",
-        content: `Client message #${messageCounter}`
+        content: `Message from WASM WebSocket`
     };
-    ws.send(JSON.stringify(message));
-    if (responseDiv) {
-        responseDiv.innerText += `Sent: ${JSON.stringify(message)}\n`;
+    
+    try {
+        wasmWs.send(JSON.stringify(message));
+    } catch (error) {
+        console.error('Failed to send message:', error);
     }
 }
 
-function clearResponse() {
-    const responseDiv = document.getElementById('response');
-    if (responseDiv) {
-        responseDiv.innerText = '';
-    }
-}
-
-(window as any).startWebSocket = startWebSocket;
+(window as any).startWebSocket = startWasmWebSocket;
 (window as any).sendWebSocketMessage = sendWebSocketMessage;
-(window as any).clearResponse = clearResponse;

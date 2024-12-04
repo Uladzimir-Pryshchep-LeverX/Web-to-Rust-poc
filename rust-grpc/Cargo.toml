@@ -3,26 +3,28 @@ name = "rust-grpc"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["wasm"]
+wasm = []
+grpc = ["dep:tonic", "dep:tonic-build"]  # Only include gRPC deps when needed
+
 [dependencies]
-tonic = "0.10.2"
-tonic-web = "0.10.2"
-tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
-tokio-stream = "0.1"
-futures-core = "0.3"
-tower-http = { version = "0.4.0", features = ["cors"] }
-prost = "0.12"
-tokio-tungstenite = "0.21"
-futures-util = "0.3"
+wasm-bindgen = "0.2"
+js-sys = "0.3"
+web-sys = { version = "0.3", features = [
+    "WebSocket",
+    "MessageEvent",
+    "BinaryType",
+    "ErrorEvent",
+    "console"
+]}
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+getrandom = { version = "0.2", features = ["js"] }
+tonic = { version = "0.10", optional = true }
 
 [build-dependencies]
-tonic-build = "0.10.2"
-
-[[bin]]
-name = "server-stream"
-path = "src/server-stream.rs"
-
-[[bin]]
-name = "websocket-server"
-path = "src/websocket-server.rs"
+tonic-build = { version = "0.10", optional = true }
