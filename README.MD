@@ -1,10 +1,10 @@
-### First time setup. Need to have `protoc` and Rust installed. (I can miss something as fill it at the end)
+### First time setup. Need to have Rust and NodeJS installed. (I can miss something as fill it at the end)
 - in 'rust-grpc' folder (need to have `protoc` and Rust installed):
   - `cargo build`
 - in 'web-grpc' folder:
   - `npm install`
 
-### WASM RUST WebSocket (Node.js required)
+### WASM RUST WebSocket
 - in 'rust-grpc' folder:
   - `wasm-pack build --target web` to build the wasm module 
 - in 'web-grpc' folder:
@@ -17,8 +17,9 @@
 - `cargo run --bin server-stream` from 'rust-grpc' folder to run Rust server
 - `envoy -c envoy.yaml` from 'web-grpc' folder to run the proxy
 - `npm run dev` from 'web-grpc' folder to run the web client
+- go to `http://localhost:3000/` and push 'Start Server Streaming' button
 
-### WebSocket (wrapped in WASM in 'wasm' branch)
+### WebSocket (use WASM WebSocket flow shown above)
 - `cargo run --bin websocket-server` from 'rust-grpc' folder to run the Rust WebSocket server
 - `npm run dev` from 'web-grpc' folder to run the web client
 
